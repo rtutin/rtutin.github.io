@@ -35,7 +35,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\n* {\n  box-sizing: border-box;\n}\n\nhtml {\n  font-family: Roboto;\n}\n\nbody {\n  margin: 0;\n}\n", ""]);
 
 // exports
 

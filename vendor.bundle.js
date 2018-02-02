@@ -83,6 +83,315 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "../../../../ngx-popup/ngx-popup.es5.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PopupModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ReferenceService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ToastService; });
+/* unused harmony export ɵa */
+/* unused harmony export ɵc */
+/* unused harmony export ɵb */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
+
+
+
+
+
+var FullscreenComponent = (function () {
+    function FullscreenComponent() {
+    }
+    /**
+     * @return {?}
+     */
+    FullscreenComponent.prototype.ngOnInit = function () {
+    };
+    return FullscreenComponent;
+}());
+FullscreenComponent.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */], args: [{
+                selector: 'app-fullscreen',
+                template: "\n    <div class=\"fullscreen\" [ngStyle]=\"{'background-image': 'url(' + background + ')'}\">\n      <ng-content></ng-content>\n    </div>\n  ",
+                styles: ["\n    .fullscreen {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      position: absolute;\n      top: 0;\n      left: 0;\n      right: 0;\n      bottom: 0;\n      z-index: 9000;\n      background-size: cover;\n      -webkit-box-orient: vertical;\n      -webkit-box-direction: normal;\n          -ms-flex-direction: column;\n              flex-direction: column;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      text-align: center;\n      color: #fff;\n    }\n  "]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+FullscreenComponent.ctorParameters = function () { return []; };
+FullscreenComponent.propDecorators = {
+    'background': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */] },],
+};
+var ToastService = (function () {
+    function ToastService() {
+        this.models = {
+            show: false
+        };
+    }
+    /**
+     * @return {?}
+     */
+    ToastService.prototype.show = function () {
+        var _this = this;
+        this.models.show = true;
+        setTimeout(function () {
+            _this.models.show = false;
+        }, 5000);
+    };
+    return ToastService;
+}());
+ToastService.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */] },
+];
+/**
+ * @nocollapse
+ */
+ToastService.ctorParameters = function () { return []; };
+var ToastComponent = (function () {
+    /**
+     * @param {?} service
+     */
+    function ToastComponent(service) {
+        this.service = service;
+    }
+    /**
+     * @return {?}
+     */
+    ToastComponent.prototype.ngOnInit = function () {
+        this.models = this.service.models;
+    };
+    return ToastComponent;
+}());
+ToastComponent.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */], args: [{
+                selector: 'app-toast',
+                template: "\n    <p [ngClass]=\"{show: models.show}\"><ng-content></ng-content></p>\n  ",
+                styles: ["\n    p {\n      display: block;\n      position: absolute;\n      bottom: 50px;\n      right: 50px;\n      width: 320px;\n      height: 35px;\n      background: rgba(0, 0, 0, .5);\n      border-radius: 4px;\n      z-index: 2;\n      opacity: 0;\n      -webkit-transition: all 1s;\n      transition: all 1s;\n      color: #fff;\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      padding: 10px;\n      font-size: 14px;\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n    }\n\n    p.show {\n       opacity: 1;\n    }\n  "]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+ToastComponent.ctorParameters = function () { return [
+    { type: ToastService, },
+]; };
+var ReferenceService = (function () {
+    /**
+     * @param {?} router
+     * @param {?} http
+     * @param {?} sanitizer
+     */
+    function ReferenceService(router$$1, http$$1, sanitizer) {
+        this.router = router$$1;
+        this.http = http$$1;
+        this.sanitizer = sanitizer;
+        this.models = {
+            first: true,
+            showThis: true,
+            showAny: true,
+            open: false,
+            reference: {},
+            references: []
+        };
+    }
+    /**
+     * @return {?}
+     */
+    ReferenceService.prototype.init = function () {
+        var _this = this;
+        if (this.models.first) {
+            this.http.get('/assets/json/reference.json').subscribe(function (r) {
+                _this.models.references = r;
+                _this.show(_this.find());
+            });
+            this.router.events.subscribe(function (e) {
+                if (e instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* NavigationEnd */]) {
+                    _this.show(_this.find());
+                }
+            });
+            this.models.first = false;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceService.prototype.dontShowThisReference = function () {
+        var /** @type {?} */ references = JSON.parse(localStorage.getItem('references'));
+        this.models.showThis = !this.models.showThis;
+        if (references === null) {
+            references = [];
+        }
+        if (this.find()) {
+            references.push(this.router.url);
+        }
+        if (!this.find()) {
+            var /** @type {?} */ nextReferences = [];
+            for (var /** @type {?} */ i in references) {
+                if (references[i] !== this.router.url) {
+                    nextReferences.push(references[i]);
+                }
+            }
+            references = nextReferences;
+        }
+        localStorage.setItem('references', JSON.stringify(references));
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceService.prototype.dontShowAnyReference = function () {
+        var /** @type {?} */ references = [];
+        this.models.showAny = !this.models.showAny;
+        if (this.models.showAny) {
+            references = [];
+        }
+        if (!this.models.showAny) {
+            references = ['*'];
+        }
+        localStorage.setItem('references', JSON.stringify(references));
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceService.prototype.close = function () {
+        this.models.open = false;
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceService.prototype.find = function () {
+        var /** @type {?} */ references = JSON.parse(localStorage.getItem('references'));
+        var /** @type {?} */ result = false;
+        var /** @type {?} */ reference = null;
+        if (references == null) {
+            references = [];
+        }
+        for (var _i = 0, _a = this.models.references; _i < _a.length; _i++) {
+            var item = _a[_i];
+            if (item.route === this.router.url) {
+                result = true;
+                reference = item;
+            }
+        }
+        for (var _b = 0, references_1 = references; _b < references_1.length; _b++) {
+            var item = references_1[_b];
+            if (item === this.router.url) {
+                result = false;
+            }
+            if (item === '*') {
+                result = false;
+            }
+        }
+        if (result) {
+            result = reference;
+        }
+        return result;
+    };
+    /**
+     * @param {?} reference
+     * @return {?}
+     */
+    ReferenceService.prototype.show = function (reference) {
+        if (reference) {
+            this.models.reference = {
+                title: reference.title,
+                body: this.sanitizer.bypassSecurityTrustHtml(reference.body)
+            };
+            this.models.open = true;
+        }
+    };
+    return ReferenceService;
+}());
+ReferenceService.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */] },
+];
+/**
+ * @nocollapse
+ */
+ReferenceService.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */], },
+    { type: __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */], },
+    { type: __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["b" /* DomSanitizer */], },
+]; };
+var ReferenceComponent = (function () {
+    /**
+     * @param {?} service
+     */
+    function ReferenceComponent(service) {
+        this.service = service;
+    }
+    /**
+     * @return {?}
+     */
+    ReferenceComponent.prototype.ngOnInit = function () {
+        this.service.init();
+        this.models = this.service.models;
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceComponent.prototype.dontShowAnyReference = function () {
+        this.service.dontShowAnyReference();
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceComponent.prototype.dontShowThisReference = function () {
+        this.service.dontShowThisReference();
+    };
+    /**
+     * @return {?}
+     */
+    ReferenceComponent.prototype.close = function () {
+        this.service.close();
+    };
+    return ReferenceComponent;
+}());
+ReferenceComponent.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */], args: [{
+                selector: 'app-reference',
+                template: "\n    <div *ngIf=\"models.open\">\n      <div class=\"reference__backdrop\" (click)=\"close()\"></div>\n      <div class=\"reference__body\">\n        <h3>{{ models.reference.title }}</h3>\n        <p [innerHtml]=\"models.reference.body\"></p>\n        <div class=\"reference__input-group\">\n          <input id=\"dontShowThisReference\" type=\"checkbox\" (change)=\"dontShowThisReference()\">\n          <label for=\"dontShowThisReference\">\u041D\u0435 \u043F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u044D\u0442\u043E \u0441\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u0435</label>\n        </div>\n        <div class=\"reference__input-group\">\n          <input id=\"dontShowAnyReference\" type=\"checkbox\" (change)=\"dontShowAnyReference()\">\n          <label for=\"dontShowAnyReference\">\u041D\u0435 \u043F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0432\u0441\u0435 \u0441\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u044F</label>\n        </div>\n      </div>\n    </div>\n  ",
+                styles: ["\n    :host .reference__backdrop {\n      position: fixed;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      z-index: 9001; }\n\n    :host .reference__body {\n      position: fixed;\n      width: 420px;\n      max-height: 630px;\n      background: #fafafa;\n      z-index: 9001;\n      -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);\n              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);\n      border: none;\n      top: 20px;\n      right: 20px;\n      padding: 0;\n      color: #4d0095; }\n      :host .reference__body:after, :host .reference__body:before {\n        bottom: 100%;\n        right: 0;\n        border: solid transparent;\n        content: \" \";\n        height: 0;\n        width: 0;\n        position: absolute;\n        pointer-events: none; }\n      :host .reference__body:after {\n        border-color: rgba(250, 250, 250, 0);\n        border-bottom-color: #fafafa;\n        border-width: 30px;\n        margin-left: -30px; }\n      :host .reference__body:before {\n        border-color: rgba(190, 190, 190, 0);\n        border-bottom-color: #bebebe;\n        border-width: 33px;\n        margin-left: -33px;\n        right: -3px; }\n      :host .reference__body .reference__input-group {\n        width: 100%;\n        float: left; }\n        :host .reference__body .reference__input-group label {\n          float: left; }\n        :host .reference__body .reference__input-group input {\n          float: left;\n          width: auto;\n          margin-right: 10px; }\n      :host .reference__body h3 {\n        font-size: 20px;\n        font-weight: normal;\n        -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);\n                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);\n        margin: 0 0 15px 0;\n        padding: 20px; }\n      :host .reference__body p {\n        font-size: 16px;\n        padding: 20px; }\n      :host .reference__body .reference__input-group {\n        padding: 0 20px; }\n      :host .reference__body .reference__input-group:last-child {\n        padding-bottom: 20px; }\n      :host .reference__body label {\n        position: relative;\n        padding-left: 24px; }\n        :host .reference__body label:before {\n          content: \"\";\n          border: 3px solid #d8d8d8;\n          border-radius: 3px;\n          background: #fff;\n          font-size: 12px;\n          position: absolute;\n          width: 12px;\n          height: 12px;\n          left: 0;\n          top: -2px; }\n      :host .reference__body input {\n        display: none; }\n      :host .reference__body input:checked + label:after {\n        content: \"\\2714\";\n        color: #4d0095;\n        font-size: 23px;\n        position: absolute;\n        top: -8px;\n        left: 4px; }\n      :host .reference__body:after, :host .reference__body:before {\n        display: none; }\n  "]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+ReferenceComponent.ctorParameters = function () { return [
+    { type: ReferenceService, },
+]; };
+var PopupModule = (function () {
+    function PopupModule() {
+    }
+    return PopupModule;
+}());
+PopupModule.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */], args: [{
+                imports: [
+                    __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */]
+                ],
+                declarations: [FullscreenComponent, ToastComponent, ReferenceComponent],
+                exports: [FullscreenComponent, ToastComponent, ReferenceComponent],
+                providers: [ToastService, ReferenceService]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+PopupModule.ctorParameters = function () { return []; };
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+//# sourceMappingURL=ngx-popup.es5.js.map
+
+
+/***/ }),
+
 /***/ "../../../../rxjs/_esm5/BehaviorSubject.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
